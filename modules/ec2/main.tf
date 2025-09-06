@@ -1,3 +1,7 @@
+#This module creates an EC2 instance with specified configurations.
+#It uses the variables defined in the variables.tf file to set the instance type, AMI ID, and other parameters.
+
+
 resource "aws_instance" "this" {
   ami                         = var.ami_id
   instance_type               = var.instance_type

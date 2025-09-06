@@ -1,63 +1,97 @@
-# Terraform AWS VPC and EC2 Setup
+# Terraform Project Documentation
 
-This project provisions AWS infrastructure using Terraform. It creates:
-- A VPC with one **public subnet** and one **private subnet**.
-- An Internet Gateway and Route Table for the public subnet.
-- A Security Group to allow SSH and HTTP/HTTPS traffic.
-- An EC2 instance in the public subnet.
+## Overview
+This project contains Terraform code to provision infrastructure.
 
 ---
 
-## 📂 Folder Structure
+## Providers
+- **aws**
 
-├── main.tf # Root module calling child modules
-├── variables.tf # Root module variables
-├── outputs.tf # Root outputs
-├── dev.tfvars # Example variable file for dev environment
-├── modules
-│ ├── vpc
-│ │ ├── main.tf # VPC, Subnets, IGW, Route tables, Security Group
-│ │ ├── variables.tf # VPC input variables
-│ │ └── outputs.tf # VPC outputs
-│ └── ec2
-│ ├── main.tf # EC2 instance creation
-│ ├── variables.tf # EC2 input variables
-│ └── outputs.tf # EC2 outputs
-└── README.md
+---
 
+## Modules
+- **vpc** (source: `./modules/vpc`)
+- **ec2** (source: `./modules/ec2`)
+
+---
+
+## Resources
+- **aws_instance** → EC2 virtual machine instance
+  - **this**
+
+- **aws_internet_gateway** → Internet Gateway for public internet access
+  - **this** → # Internet Gateway
+
+- **aws_route_table** → Route Table for directing network traffic
+  - **public** → # Public Route Table
+
+- **aws_route_table_association** → Terraform resource
+  - **public_assoc** → # Route Table Association for Public Subnet
+
+- **aws_security_group** → Firewall rules for controlling inbound/outbound traffic
+  - **default**
+
+- **aws_subnet** → Subnet inside a VPC
+  - **public** → # Public Subnet
+  - **private** → # Private Subnet
+
+- **aws_vpc** → Virtual Private Cloud (network)
+  - **this**
+
+- **local_file** → Terraform resource
+  - **inventory**
+
+- **null_resource** → Terraform resource
+  - **run_ansible**
 
 
 ---
 
-## 🔑 Prerequisites
+## Variables
+- **aws_region** (default: `ap-south-1`) → AWS region to deploy resources
+- **vpc_cidr** (default: `No default`) → CIDR block for the VPC
+- **vpc_name** (default: `No default`) → Name tag for the VPC
+- **public_subnet** (default: `No default`) → CIDR block for public subnet
+- **private_subnet** (default: `No default`) → CIDR block for private subnet
+- **ami_id** (default: `No default`) → AMI ID for the EC2 instance
+- **instance_type** (default: `No default`) → EC2 instance type
+- **key_name** (default: `No default`) → Key pair name for SSH access
+- **instance_name** (default: `No default`) → Tag name for the EC2 instance
+- **private_key_path** (default: `No default`) → Path to private key file for Ansible SSH
+- **ec2_count** (default: `1`) → Number of EC2 instances to create
+- **vpc_cidr** (default: `No default`) → CIDR block for the VPC
+- **vpc_name** (default: `No default`) → Name tag for the VPC
+- **public_subnet** (default: `No default`) → CIDR block for public subnet
+- **private_subnet** (default: `No default`) → CIDR block for private subnet
+- **ami_id** (default: `No default`) → AMI ID for the EC2 instance
+- **instance_type** (default: `No default`) → EC2 instance type
+- **key_name** (default: `No default`) → Key pair name for SSH access
+- **subnet_id** (default: `No default`) → Subnet ID to launch instance in
+- **security_groups** (default: `No default`) → List of security groups for the instance
+- **instance_name** (default: `No default`) → Tag name for the EC2 instance
+- **disk_size** (default: `20`) → Size of the root disk in GB
 
-1. **Install Terraform**: [Terraform Install Guide](https://developer.hashicorp.com/terraform/downloads)  
-2. **Install AWS CLI** and configure credentials:  
-   ```bash
-   aws configure
+---
 
-Provide your AWS Access Key, Secret Key, Region.
-Create an AWS Key Pair in your target region:
+## Outputs
+- **vpc_id** → No description
+- **public_subnet_id** → No description
+- **private_subnet_id** → No description
+- **ec2_instance_id** → No description
+- **ec2_public_ip** → No description
+- **vpc_id** → No description
+- **public_subnet_id** → No description
+- **private_subnet_id** → No description
+- **default_sg_id** → No description
+- **instance_id** → No description
+- **public_ip** → No description
+- **public_ips** → No description
 
-aws ec2 create-key-pair --key-name jenkinserver --query "KeyMaterial" --output text > jenkinserver.pem
-chmod 400 jenkinserver.pem
+---
 
-Update the key name in dev.tfvars.
-Edit the dev.tfvars file with your values:
+## Architecture Diagram
+![Terraform Architecture](architecture.png)
 
-# VPC Configuration
-vpc_cidr        = "10.0.0.0/16"
-public_subnet   = "10.0.1.0/24"
-private_subnet  = "10.0.2.0/24"
-project         = "demo"
-environment     = "dev"
-
-# EC2 Configuration
-ami_id          = "ami-0c1a7f89451184c8b"   # Replace with valid AMI in your region
-instance_type   = "t2.micro"
-key_name        = "jenkinserver"            # Your AWS key pair name
-
-
-
-terraform plan -var-file="prod.tfvars"
-terraform apply -var-file="prod.tfvars"
+---
+*Generated automatically from Terraform code.*

@@ -1,3 +1,8 @@
+#This file defines the input variables for the EC2 instance module.
+#These variables are used to configure the EC2 instance properties.
+#The values for these variables are defined in the terraform.tfvars file.
+
+
 variable "ami_id" {
   description = "AMI ID for the EC2 instance"
   type        = string

@@ -1,3 +1,6 @@
+## This file defines the outputs for the entire AWS infrastructure.
+## It aggregates outputs from the VPC and EC2 modules to provide key information such as VPC ID, subnet IDs, and EC2 instance details.  
+
 output "vpc_id" {
   value = module.vpc.vpc_id
 }
