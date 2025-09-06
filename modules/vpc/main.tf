@@ -1,3 +1,7 @@
+#This module creates a VPC with public and private subnets, an internet gateway, route tables, and a default security group.
+#It uses the variables defined in the variables.tf file to set the VPC CIDR, subnet CIDRs, and VPC name.
+
+
 # Fetch available Availability Zones in the region
 data "aws_availability_zones" "available" {
   state = "available"

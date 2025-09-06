@@ -1,3 +1,8 @@
+#This file defines the input variables for the VPC module.
+#These variables are used to configure the VPC properties.
+#The values for these variables are defined in the terraform.tfvars file.
+
+
 variable "vpc_cidr" {
   description = "CIDR block for the VPC"
   type        = string
